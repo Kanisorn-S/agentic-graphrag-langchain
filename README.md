@@ -94,6 +94,16 @@ Open the notebook file (`graphrag.ipynb`) and execute the cells step by step to 
 
 ---
 
+### 6. Stop Neo4j 
+
+When you are done, run
+
+```bash
+docker-compose down
+```
+
+This will stop Neo4j
+
 ## 🧱 Folder Structure
 
 ```
