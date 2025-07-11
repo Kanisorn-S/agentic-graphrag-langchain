@@ -1,0 +1,145 @@
+2025-07-04 08:56:34.361+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2025-07-04 08:56:34.371+0000 WARN  Setting 'dbms.logs.debug.level' is removed. It no longer has any effect.
+2025-07-04 08:56:34.372+0000 WARN  Setting 'dbms.logs.query.allocation_logging_enabled' is removed. It no longer has any effect.
+2025-07-04 08:56:34.373+0000 WARN  Setting 'dbms.track_query_allocation' is removed. It no longer has any effect.
+2025-07-04 08:56:34.374+0000 WARN  Setting 'dbms.logs.query.page_logging_enabled' is removed. It no longer has any effect.
+2025-07-04 08:56:34.375+0000 WARN  Setting 'dbms.logs.query.time_logging_enabled' is removed. It no longer has any effect.
+2025-07-04 08:56:34.376+0000 WARN  Use of deprecated setting 'dbms.connector.http.listen_address'. It is replaced by 'server.http.listen_address'.
+2025-07-04 08:56:34.376+0000 WARN  Use of deprecated setting 'dbms.connector.bolt.listen_address'. It is replaced by 'server.bolt.listen_address'.
+2025-07-04 08:56:34.377+0000 WARN  Use of deprecated setting 'dbms.security.procedures.whitelist'. It is replaced by 'dbms.security.procedures.allowlist'.
+2025-07-04 08:56:34.378+0000 WARN  Use of deprecated setting 'dbms.track_query_cpu_time'. It is replaced by 'db.track_query_cpu_time'.
+2025-07-04 08:56:34.379+0000 WARN  Use of deprecated setting 'dbms.logs.query.threshold'. It is replaced by 'db.logs.query.threshold'.
+2025-07-04 08:56:34.380+0000 WARN  Use of deprecated setting 'dbms.logs.query.parameter_logging_enabled'. It is replaced by 'db.logs.query.parameter_logging_enabled'.
+2025-07-04 08:56:34.381+0000 WARN  Use of deprecated setting 'dbms.logs.query.enabled'. It is replaced by 'db.logs.query.enabled'.
+2025-07-04 08:56:34.382+0000 WARN  Use of deprecated setting 'dbms.memory.heap.max_size'. It is replaced by 'server.memory.heap.max_size'.
+2025-07-04 08:56:34.383+0000 WARN  Use of deprecated setting 'dbms.memory.heap.initial_size'. It is replaced by 'server.memory.heap.initial_size'.
+2025-07-04 08:56:34.391+0000 INFO  Starting...
+2025-07-04 08:56:35.762+0000 INFO  This instance is ServerId{efe26804} (efe26804-1955-44a6-acb5-d7a508830d1a)
+2025-07-04 08:56:37.504+0000 INFO  ======== Neo4j 2025.05.1 ========
+2025-07-04 08:56:44.870+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2025-07-04 08:56:47.006+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2025-07-04 08:56:48.203+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2025-07-04 08:56:48.205+0000 INFO  Remote interface available at http://localhost:7474/
+2025-07-04 08:56:48.210+0000 INFO  id: D73D654110E8BBD7C7C95818023AE2E7C6C1CAD6CAEF38DB4F2D33900CCFBF30
+2025-07-04 08:56:48.211+0000 INFO  name: system
+2025-07-04 08:56:48.212+0000 INFO  creationDate: 2025-07-04T08:56:40.237Z
+2025-07-04 08:56:48.213+0000 INFO  Started.
+2025-07-04 09:22:05.108+0000 INFO  Neo4j Server shutdown initiated by request
+2025-07-04 09:22:05.117+0000 INFO  Stopping...
+2025-07-07 06:23:10.914+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2025-07-07 06:23:10.921+0000 WARN  Setting 'dbms.logs.debug.level' is removed. It no longer has any effect.
+2025-07-07 06:23:10.922+0000 WARN  Setting 'dbms.logs.query.allocation_logging_enabled' is removed. It no longer has any effect.
+2025-07-07 06:23:10.924+0000 WARN  Setting 'dbms.track_query_allocation' is removed. It no longer has any effect.
+2025-07-07 06:23:10.927+0000 WARN  Setting 'dbms.logs.query.page_logging_enabled' is removed. It no longer has any effect.
+2025-07-07 06:23:10.928+0000 WARN  Setting 'dbms.logs.query.time_logging_enabled' is removed. It no longer has any effect.
+2025-07-07 06:23:10.930+0000 WARN  Use of deprecated setting 'dbms.connector.http.listen_address'. It is replaced by 'server.http.listen_address'.
+2025-07-07 06:23:10.931+0000 WARN  Use of deprecated setting 'dbms.connector.bolt.listen_address'. It is replaced by 'server.bolt.listen_address'.
+2025-07-07 06:23:10.933+0000 WARN  Use of deprecated setting 'dbms.security.procedures.whitelist'. It is replaced by 'dbms.security.procedures.allowlist'.
+2025-07-07 06:23:10.934+0000 WARN  Use of deprecated setting 'dbms.track_query_cpu_time'. It is replaced by 'db.track_query_cpu_time'.
+2025-07-07 06:23:10.935+0000 WARN  Use of deprecated setting 'dbms.logs.query.threshold'. It is replaced by 'db.logs.query.threshold'.
+2025-07-07 06:23:10.936+0000 WARN  Use of deprecated setting 'dbms.logs.query.parameter_logging_enabled'. It is replaced by 'db.logs.query.parameter_logging_enabled'.
+2025-07-07 06:23:10.936+0000 WARN  Use of deprecated setting 'dbms.logs.query.enabled'. It is replaced by 'db.logs.query.enabled'.
+2025-07-07 06:23:10.937+0000 WARN  Use of deprecated setting 'dbms.memory.heap.max_size'. It is replaced by 'server.memory.heap.max_size'.
+2025-07-07 06:23:10.938+0000 WARN  Use of deprecated setting 'dbms.memory.heap.initial_size'. It is replaced by 'server.memory.heap.initial_size'.
+2025-07-07 06:23:10.946+0000 INFO  Starting...
+2025-07-07 06:23:12.183+0000 INFO  This instance is ServerId{efe26804} (efe26804-1955-44a6-acb5-d7a508830d1a)
+2025-07-07 06:23:13.629+0000 INFO  ======== Neo4j 2025.05.1 ========
+2025-07-07 06:23:22.143+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2025-07-07 06:23:24.539+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2025-07-07 06:23:25.492+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2025-07-07 06:23:25.494+0000 INFO  Remote interface available at http://localhost:7474/
+2025-07-07 06:23:25.503+0000 INFO  id: D73D654110E8BBD7C7C95818023AE2E7C6C1CAD6CAEF38DB4F2D33900CCFBF30
+2025-07-07 06:23:25.507+0000 INFO  name: system
+2025-07-07 06:23:25.512+0000 INFO  creationDate: 2025-07-04T08:56:40.237Z
+2025-07-07 06:23:25.515+0000 INFO  Started.
+2025-07-07 08:10:15.413+0000 WARN  Java vector incubator module is not readable. For optimal vector performance, pass '--add-modules jdk.incubator.vector' to enable Vector API.
+2025-07-07 09:29:15.170+0000 INFO  Neo4j Server shutdown initiated by request
+2025-07-07 09:29:15.195+0000 INFO  Stopping...
+2025-07-08 00:48:58.963+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2025-07-08 00:48:58.969+0000 WARN  Setting 'dbms.logs.debug.level' is removed. It no longer has any effect.
+2025-07-08 00:48:58.969+0000 WARN  Setting 'dbms.logs.query.allocation_logging_enabled' is removed. It no longer has any effect.
+2025-07-08 00:48:58.970+0000 WARN  Setting 'dbms.track_query_allocation' is removed. It no longer has any effect.
+2025-07-08 00:48:58.972+0000 WARN  Setting 'dbms.logs.query.page_logging_enabled' is removed. It no longer has any effect.
+2025-07-08 00:48:58.975+0000 WARN  Setting 'dbms.logs.query.time_logging_enabled' is removed. It no longer has any effect.
+2025-07-08 00:48:58.976+0000 WARN  Use of deprecated setting 'dbms.connector.http.listen_address'. It is replaced by 'server.http.listen_address'.
+2025-07-08 00:48:58.977+0000 WARN  Use of deprecated setting 'dbms.connector.bolt.listen_address'. It is replaced by 'server.bolt.listen_address'.
+2025-07-08 00:48:58.978+0000 WARN  Use of deprecated setting 'dbms.security.procedures.whitelist'. It is replaced by 'dbms.security.procedures.allowlist'.
+2025-07-08 00:48:58.979+0000 WARN  Use of deprecated setting 'dbms.track_query_cpu_time'. It is replaced by 'db.track_query_cpu_time'.
+2025-07-08 00:48:58.980+0000 WARN  Use of deprecated setting 'dbms.logs.query.threshold'. It is replaced by 'db.logs.query.threshold'.
+2025-07-08 00:48:58.981+0000 WARN  Use of deprecated setting 'dbms.logs.query.parameter_logging_enabled'. It is replaced by 'db.logs.query.parameter_logging_enabled'.
+2025-07-08 00:48:58.983+0000 WARN  Use of deprecated setting 'dbms.logs.query.enabled'. It is replaced by 'db.logs.query.enabled'.
+2025-07-08 00:48:58.985+0000 WARN  Use of deprecated setting 'dbms.memory.heap.max_size'. It is replaced by 'server.memory.heap.max_size'.
+2025-07-08 00:48:58.985+0000 WARN  Use of deprecated setting 'dbms.memory.heap.initial_size'. It is replaced by 'server.memory.heap.initial_size'.
+2025-07-08 00:48:58.993+0000 INFO  Starting...
+2025-07-08 00:49:00.161+0000 INFO  This instance is ServerId{efe26804} (efe26804-1955-44a6-acb5-d7a508830d1a)
+2025-07-08 00:49:01.692+0000 INFO  ======== Neo4j 2025.05.1 ========
+2025-07-08 00:49:10.341+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2025-07-08 00:49:13.244+0000 WARN  Java vector incubator module is not readable. For optimal vector performance, pass '--add-modules jdk.incubator.vector' to enable Vector API.
+2025-07-08 00:49:15.046+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2025-07-08 00:49:16.212+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2025-07-08 00:49:16.215+0000 INFO  Remote interface available at http://localhost:7474/
+2025-07-08 00:49:16.226+0000 INFO  id: D73D654110E8BBD7C7C95818023AE2E7C6C1CAD6CAEF38DB4F2D33900CCFBF30
+2025-07-08 00:49:16.228+0000 INFO  name: system
+2025-07-08 00:49:16.230+0000 INFO  creationDate: 2025-07-04T08:56:40.237Z
+2025-07-08 00:49:16.233+0000 INFO  Started.
+2025-07-08 01:53:20.401+0000 INFO  Neo4j Server shutdown initiated by request
+2025-07-08 01:53:20.411+0000 INFO  Stopping...
+2025-07-08 01:53:27.233+0000 INFO  Stopped.
+2025-07-08 02:00:26.380+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2025-07-08 02:00:26.394+0000 WARN  Setting 'dbms.logs.debug.level' is removed. It no longer has any effect.
+2025-07-08 02:00:26.396+0000 WARN  Setting 'dbms.logs.query.allocation_logging_enabled' is removed. It no longer has any effect.
+2025-07-08 02:00:26.397+0000 WARN  Setting 'dbms.track_query_allocation' is removed. It no longer has any effect.
+2025-07-08 02:00:26.398+0000 WARN  Setting 'dbms.logs.query.page_logging_enabled' is removed. It no longer has any effect.
+2025-07-08 02:00:26.399+0000 WARN  Setting 'dbms.logs.query.time_logging_enabled' is removed. It no longer has any effect.
+2025-07-08 02:00:26.401+0000 WARN  Use of deprecated setting 'dbms.connector.http.listen_address'. It is replaced by 'server.http.listen_address'.
+2025-07-08 02:00:26.405+0000 WARN  Use of deprecated setting 'dbms.connector.bolt.listen_address'. It is replaced by 'server.bolt.listen_address'.
+2025-07-08 02:00:26.407+0000 WARN  Use of deprecated setting 'dbms.security.procedures.whitelist'. It is replaced by 'dbms.security.procedures.allowlist'.
+2025-07-08 02:00:26.408+0000 WARN  Use of deprecated setting 'dbms.track_query_cpu_time'. It is replaced by 'db.track_query_cpu_time'.
+2025-07-08 02:00:26.410+0000 WARN  Use of deprecated setting 'dbms.logs.query.threshold'. It is replaced by 'db.logs.query.threshold'.
+2025-07-08 02:00:26.411+0000 WARN  Use of deprecated setting 'dbms.logs.query.parameter_logging_enabled'. It is replaced by 'db.logs.query.parameter_logging_enabled'.
+2025-07-08 02:00:26.412+0000 WARN  Use of deprecated setting 'dbms.logs.query.enabled'. It is replaced by 'db.logs.query.enabled'.
+2025-07-08 02:00:26.413+0000 WARN  Use of deprecated setting 'dbms.memory.heap.max_size'. It is replaced by 'server.memory.heap.max_size'.
+2025-07-08 02:00:26.415+0000 WARN  Use of deprecated setting 'dbms.memory.heap.initial_size'. It is replaced by 'server.memory.heap.initial_size'.
+2025-07-08 02:00:26.423+0000 INFO  Starting...
+2025-07-08 02:00:28.225+0000 INFO  This instance is ServerId{efe26804} (efe26804-1955-44a6-acb5-d7a508830d1a)
+2025-07-08 02:00:30.584+0000 INFO  ======== Neo4j 2025.05.1 ========
+2025-07-08 02:00:38.348+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2025-07-08 02:00:41.388+0000 WARN  Java vector incubator module is not readable. For optimal vector performance, pass '--add-modules jdk.incubator.vector' to enable Vector API.
+2025-07-08 02:00:43.099+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2025-07-08 02:00:44.335+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2025-07-08 02:00:44.338+0000 INFO  Remote interface available at http://localhost:7474/
+2025-07-08 02:00:44.344+0000 INFO  id: D73D654110E8BBD7C7C95818023AE2E7C6C1CAD6CAEF38DB4F2D33900CCFBF30
+2025-07-08 02:00:44.347+0000 INFO  name: system
+2025-07-08 02:00:44.348+0000 INFO  creationDate: 2025-07-04T08:56:40.237Z
+2025-07-08 02:00:44.349+0000 INFO  Started.
+2025-07-08 10:32:07.550+0000 INFO  Neo4j Server shutdown initiated by request
+2025-07-08 10:32:07.659+0000 INFO  Stopping...
+2025-07-11 06:26:17.954+0000 INFO  Logging config in use: Embedded default config 'default-user-logs.xml'
+2025-07-11 06:26:17.963+0000 WARN  Setting 'dbms.logs.debug.level' is removed. It no longer has any effect.
+2025-07-11 06:26:17.964+0000 WARN  Setting 'dbms.logs.query.allocation_logging_enabled' is removed. It no longer has any effect.
+2025-07-11 06:26:17.965+0000 WARN  Setting 'dbms.track_query_allocation' is removed. It no longer has any effect.
+2025-07-11 06:26:17.966+0000 WARN  Setting 'dbms.logs.query.page_logging_enabled' is removed. It no longer has any effect.
+2025-07-11 06:26:17.967+0000 WARN  Setting 'dbms.logs.query.time_logging_enabled' is removed. It no longer has any effect.
+2025-07-11 06:26:17.968+0000 WARN  Use of deprecated setting 'dbms.connector.http.listen_address'. It is replaced by 'server.http.listen_address'.
+2025-07-11 06:26:17.969+0000 WARN  Use of deprecated setting 'dbms.connector.bolt.listen_address'. It is replaced by 'server.bolt.listen_address'.
+2025-07-11 06:26:17.970+0000 WARN  Use of deprecated setting 'dbms.security.procedures.whitelist'. It is replaced by 'dbms.security.procedures.allowlist'.
+2025-07-11 06:26:17.970+0000 WARN  Use of deprecated setting 'dbms.track_query_cpu_time'. It is replaced by 'db.track_query_cpu_time'.
+2025-07-11 06:26:17.971+0000 WARN  Use of deprecated setting 'dbms.logs.query.threshold'. It is replaced by 'db.logs.query.threshold'.
+2025-07-11 06:26:17.973+0000 WARN  Use of deprecated setting 'dbms.logs.query.parameter_logging_enabled'. It is replaced by 'db.logs.query.parameter_logging_enabled'.
+2025-07-11 06:26:17.975+0000 WARN  Use of deprecated setting 'dbms.logs.query.enabled'. It is replaced by 'db.logs.query.enabled'.
+2025-07-11 06:26:17.977+0000 WARN  Use of deprecated setting 'dbms.memory.heap.max_size'. It is replaced by 'server.memory.heap.max_size'.
+2025-07-11 06:26:17.978+0000 WARN  Use of deprecated setting 'dbms.memory.heap.initial_size'. It is replaced by 'server.memory.heap.initial_size'.
+2025-07-11 06:26:17.984+0000 INFO  Starting...
+2025-07-11 06:26:18.996+0000 INFO  This instance is ServerId{efe26804} (efe26804-1955-44a6-acb5-d7a508830d1a)
+2025-07-11 06:26:20.336+0000 INFO  ======== Neo4j 2025.05.1 ========
+2025-07-11 06:26:26.940+0000 INFO  Anonymous Usage Data is being sent to Neo4j, see https://neo4j.com/docs/usage-data/
+2025-07-11 06:26:29.189+0000 WARN  Java vector incubator module is not readable. For optimal vector performance, pass '--add-modules jdk.incubator.vector' to enable Vector API.
+2025-07-11 06:26:30.566+0000 INFO  Bolt enabled on 0.0.0.0:7687.
+2025-07-11 06:26:31.483+0000 INFO  HTTP enabled on 0.0.0.0:7474.
+2025-07-11 06:26:31.485+0000 INFO  Remote interface available at http://localhost:7474/
+2025-07-11 06:26:31.490+0000 INFO  id: D73D654110E8BBD7C7C95818023AE2E7C6C1CAD6CAEF38DB4F2D33900CCFBF30
+2025-07-11 06:26:31.491+0000 INFO  name: system
+2025-07-11 06:26:31.492+0000 INFO  creationDate: 2025-07-04T08:56:40.237Z
+2025-07-11 06:26:31.494+0000 INFO  Started.
+2025-07-11 06:38:08.636+0000 INFO  Neo4j Server shutdown initiated by request
+2025-07-11 06:38:08.643+0000 INFO  Stopping...
