@@ -1,0 +1,140 @@
+{
+  "name": "Retriever Agent HTTP",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "options": {
+          "systemMessage": "You are an intelligent AI agent tasked with retrieving as much relevant and useful information as possible from a knowledge graph via an API call.\n\nYou have access to one tool: `http_call`, which queries the knowledge graph API. It accepts a single parameter called `query`. The API will return a structured response containing data such as related documents, entities, and their relationships.\n\n**When given a `query`:**\n\n1. Understand the intent behind the input and reformulate it if necessary to improve relevance.\n2. Use the `http_call` tool by passing the refined query string.\n3. Analyze the API response carefully. Look for:\n\n   * Key documents or summaries\n   * Named entities of interest\n   * Graph-based relationships or links between entities\n4. Synthesize this information into a concise and informative answer, including summaries, explanations of relationships, and any insights relevant to the user's query.\n\nBe thorough, thoughtful, and ensure the information returned is as complete and context-rich as possible. If the result is ambiguous or incomplete, consider rephrasing and issuing a follow-up `http_call`.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        -60
+      ],
+      "id": "1f4357fa-bfb0-4d07-b33d-b9554b33830d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        140
+      ],
+      "id": "d8dd6933-a7e8-43ff-8940-3cc0b85eab43",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "xosb0xNXv1U0bSvr",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -280,
+        -60
+      ],
+      "id": "a380620c-6f87-442d-9849-879ab628de98",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "toolDescription": "This tool allows the agent to call an external API endpoint that interfaces with a knowledge graph. The agent must pass a single query parameter named query containing the user's input or an intelligently reformulated question. The API will respond with relevant data from the knowledge graph, including documents, entities, and relationships.",
+        "url": "http://127.0.0.1:8000/query",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', ``, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        160
+      ],
+      "id": "abbf48f4-d363-4ed3-a9c8-9676b8f2942c",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "query": "ภาษีมูลค่าเพิ่ม"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bb16f603-983b-41a7-a5ba-2ed90cd7ea04",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "24cb73b55c22d9657b5fdc11799f6c92936b55c967240a9d40cd299a6a7a255a"
+  },
+  "id": "H9MGpIDOCj5g2CRS",
+  "tags": []
+}

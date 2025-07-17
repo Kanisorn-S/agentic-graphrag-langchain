@@ -1,0 +1,129 @@
+{
+  "name": "Retriever Agent MCP",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "options": {
+          "systemMessage": "You are an intelligent AI agent connected to a knowledge graph system via an MCP server. Your goal is to retrieve as much relevant and useful information as possible in response to a given `query`.\n\nYou have access to the following tools:\n\n* **vector\\_search(query: str)** → Returns relevant documents from the knowledge graph based on semantic similarity to the input query.\n* **search\\_graph(entity: str)** → Returns graph-based relationships and contextual information for a given entity.\n\n**When given a `query`:**ALWAYS** follow these steps and used these tools\n\n1.1 From the query, use `vector_search(query)` to retrieve semantically related documents or data.\n1.2 For each unique and relevant entity in the query, use `search_graph(entity)` to explore its relationships and context within the graph.\n2. Combine and summarize the retrieved data into a paragraph that includes useful information regarding the original query.\n\nAlways aim to retrieve broad, deep, and relevant information that helps the user understand the topic thoroughly. Do **NOT** ask the user for more information or clarifying data.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        -60
+      ],
+      "id": "4f261599-60f0-4fc8-826f-481df6488e35",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        140
+      ],
+      "id": "22116f05-f486-4816-be08-75caa0b994eb",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "xosb0xNXv1U0bSvr",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "http://127.0.0.1:8000/mcp"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        240,
+        140
+      ],
+      "id": "d927098a-d4af-4ab2-bb9a-3fe4658f0af4",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -280,
+        -60
+      ],
+      "id": "91264dd0-34e3-4635-9469-695c09b1622f",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "query": "ภาษีมูลค่าเพิ่ม"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "323fecf7-fae2-4a1f-9c5e-7b4d1d708972",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "24cb73b55c22d9657b5fdc11799f6c92936b55c967240a9d40cd299a6a7a255a"
+  },
+  "id": "wbex2bSDw9fmJiwF",
+  "tags": []
+}

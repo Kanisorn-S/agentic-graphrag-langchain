@@ -1,0 +1,755 @@
+{
+  "name": "Document Parsing MultiModal Graph API",
+  "nodes": [
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "fileName"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6f979a65-2255-408f-b5b6-4fcc038b5f6c",
+      "name": "Sort Pages",
+      "type": "n8n-nodes-base.sort",
+      "position": [
+        -660,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {},
+      "id": "f89d0be8-cf0c-4204-9d53-6c55c4c64d5a",
+      "name": "Extract Zip File",
+      "type": "n8n-nodes-base.compression",
+      "position": [
+        -1100,
+        320
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "jsCode": "let results = [];\n\nfor (item of items) {\n    for (key of Object.keys(item.binary)) {\n        results.push({\n            json: {\n                fileName: item.binary[key].fileName\n            },\n            binary: {\n                data: item.binary[key],\n            }\n        });\n    }\n}\n\nreturn results;"
+      },
+      "id": "867d1f54-cff8-40d6-aa12-2f7341fffd2f",
+      "name": "Images To List",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -880,
+        320
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "formTitle": "Document Parser",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Document",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "acceptFileTypes": ".pdf",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -1600,
+        320
+      ],
+      "id": "28cbb2fa-46f5-419b-80b4-74923741fc0b",
+      "name": "On form submission",
+      "webhookId": "3caf2b7a-775e-46c9-a277-9f9eaa753edb"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8080/api/v1/convert/pdf/img",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "fileInput",
+              "inputDataFieldName": "Document"
+            },
+            {
+              "name": "imageFormat",
+              "value": "jpg"
+            },
+            {
+              "name": "singleOrMultiple",
+              "value": "multiple"
+            },
+            {
+              "name": "dpi",
+              "value": "300"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bbf61055-81e1-4de9-852a-80da6455a73a",
+      "name": "Split PDF into Images",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -1340,
+        320
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputString = $input.first().json.output\nconst inputStringLength = inputString.length\nconst validJsonString = inputString.substring(8, inputStringLength - 4)\nreturn {\"output\": JSON.parse(validJsonString)}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        620,
+        140
+      ],
+      "id": "5b9caa25-b7ad-4ea3-9065-eb6f05d99906",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "You are an intelligent AI assistant designed to extract structured information from accounting documents such as invoices, receipts, and payment confirmations. Your goal is to output a **valid JSON object** containing important data points that accountants need to review, classify, and comply with accounting and tax regulations.\n\n🧾 The structure of your output JSON is **not fixed**, but it should include as many of the following **key data fields** as can be found or inferred:\n\n#### 🔍 Data From the Document:\n\n* เลขประจำตัวผู้เสียภาษี (Tax ID)\n* วันที่ในเอกสาร (Document date)\n* มูลค่า (Value / Amounts)\n* คำอธิบายสินค้า/บริการ (Description of goods/services)\n* สกุลเงิน (Currency)\n* ชื่อผู้ขาย/ลูกค้า (Vendor/Customer name)\n* ประเภทเอกสาร (Document type: e.g., invoice, receipt)\n\n#### 🌍 Additional Fields To Research or Infer:\n\n* **ประเทศของคู่ค้า** (Country of the other party) → used to determine whether it's a domestic or foreign transaction\n* **หมวดหมู่สินค้า/บริการ** (Product/service category) → helps determine tax treatment (e.g., advertising, software, subcontracting)\n* **บริบทภายในกิจการ** (Business context):\n\n   * ชื่อบริษัทหรือสาขา (Company or branch name)\n   * ประเภทธุรกิจ (Type of business)\n   * VAT registration status\n\n For each field, provide:\n\n * `value`: extracted or inferred data\n * `confidence`: a float between 0.0 and 1.0 representing your confidence level\n\n Use this **confidence scale**:\n\n * ≥ 0.90: Clearly stated or reliably confirmed\n * 0.60–0.89: Likely inferred, not 100% explicit\n * < 0.60: Uncertain or ambiguous\n\n #### ⚠️ regulation\\_flags\n\n Include a `regulation_flags` array for any alerts, comments, or notes that may assist in compliance or classification (e.g., “บริการจากต่างประเทศ อาจต้องจัดเก็บ VAT แทน” / “Service from abroad may require reverse-charge VAT”). Each entry must have:\n\n * `note`: a short description of the regulatory concern\n * `confidence`: confidence in this flag being relevant\n\n🔁 MANDATORY SEARCH TOOL USAGE\nYou must always use the Google Search Tool, even if information appears to be complete in the document. Use it to:\n\nConfirm or classify product/service categories\n\nCheck if the vendor/customer is VAT-registered\n\nDetermine the country of the company from its name or tax ID\n\nCross-check unclear or partial document content\n\nThe tool expects an input \"keyword\" which is your search query\n\nIt returns a list of questions and answers of the **result from Google**. Use it to:\n - Classify goods/services (e.g., is it software or advertising?)\n - Check if a business is VAT-registered\n - Determine country of origin from a company name or Tax ID\n\n⚠️ If something is missing or unclear, **USE** the provided tool to try and find the value. If the value cannot be found, return `null` and assign a low confidence score. Do **not guess** without evidence. Your output must be **only a valid JSON object**, with no explanation or surrounding text.\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        200,
+        320
+      ],
+      "id": "97d6142d-c026-47d1-9b54-29d93aaf1bc3",
+      "name": "Extraction and Classification Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        180,
+        540
+      ],
+      "id": "44c07507-d3b1-45a5-ace2-a2d443d8654d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "xosb0xNXv1U0bSvr",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=transcribe the image to markdown. use information from the **CONTENT** block if needed.\n### CONTENT\n{{ $json.text }}\n### END CONTENT",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You help transcribe documents to markdown, keeping faithful to all text printed and visible to the best of your ability. Ensure you capture all headings, subheadings, titles as well as small print.\nFor any tables found with the document, convert them to markdown tables. If table row descriptions overflow into more than 1 row, concatanate and fit them into a single row. If two or more tables are adjacent horizontally, stack the tables vertically instead. There should be a newline after every markdown table.\nFor any graphics, use replace with a description of the image. Images of scanned checks should be converted to the phrase \"<scanned image of check>\"."
+            },
+            {
+              "type": "HumanMessagePromptTemplate",
+              "messageType": "imageBinary"
+            }
+          ]
+        }
+      },
+      "id": "82fd053c-1cb9-4b88-9948-dd29a4b5fa8b",
+      "name": "Transcribe to Markdown",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        -160,
+        320
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        520
+      ],
+      "id": "0e9874c1-4711-4b61-85b6-8fb30ba4f273",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "xosb0xNXv1U0bSvr",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.output }}",
+        "options": {
+          "systemMessage": "> You are the **Orchestrator Agent** in a multi-agent AI system responsible for helping human accountants process accounting documents correctly according to relevant rules and standards (e.g., TFRS, TAS, Thai tax laws).\n>\n> You will receive, as input, a structured **JSON object** produced by an extraction agent. This JSON contains key details extracted from an accounting document (such as invoices or receipts), where each field includes:\n>\n> * `value`: the extracted data\n> * `confidence`: a float score (0.0–1.0) indicating how certain the data is\n>\n> Your responsibilities are to:\n>\n> 1. **Analyze the input JSON** and identify:\n>\n> * Key information that determines how the document should be processed\n>\n> * Any low-confidence fields or regulatory flags\n>\n> * Questions that must be answered to ensure correct accounting treatment (e.g., VAT handling, expense categorization, documentation)\n>\n> 2. **Generate one or more search queries** for the **Retriever Agent**. These queries must be general and tailored to retrieve the most relevant regulatory or accounting guidance from the database (TFRS, TAS, Thai Revenue Code, etc.). Use this tool **ONLY ONCE**. Make **MORE SPECIFIC** queries on when previous queries failed to retrieve any data.\n>\n> * Each query must be sent in the following format:\n>\n>   ```json\n>   { \"query\": \"<list of general keyword>\" }\n>   ```\n>\n> * Each query must be in the form of a **LIST OF KEYWORD** and **NOT** a questoin. An example of a **GOOD** query is \"มาตรา 83/6 ภาษี เอกสาร\". Be **GENERAL**\n>\n> * The Retriever Agent will return relevant **Thai-language** regulatory text or guidance passages.\n>\n> 3. **Use the retrieved content (in Thai)** along with the input JSON to generate a clear, accurate, and actionable **step-by-step guide** for a human accountant. This guide should include:\n>\n> * How to record and classify the document in the accounting system\n>\n> * Tax treatment (e.g., VAT, withholding tax, reverse charge)\n>\n> * Regulatory checks and documentation required\n>\n> * Recommendations for unclear or low-confidence fields (e.g., verification or escalation)\n>\n> * Refernce to the source of data (document name, page, line, ...) **ALWAYS** include this\n>\n> 4. If the input JSON includes any `regulation_flags`, reflect those concerns in the guide or in additional notes.\n>\n> 📌 Your output should be a valid JSON object in the following format:\n>\n> ```json\n> {\n> ```\n\n\"steps\": \\[\n{ \"step\": 1, \"instruction\": \"...\" },\n{ \"step\": 2, \"instruction\": \"...\" }\n],\n\"notes\": \\[\n\"...\"  // Optional: highlight uncertainties, recommendations, or warnings\n]\n}\n\n```\n>\n>🧠 Guidelines:\n> - **All queries to the Retriever must be in Thai**, based on your understanding of the input.\n> - Use **ONLY** the retrieved Thai sources and extracted document data to justify your recommendations.\n> - Be professional, practical, and specific — your output will be followed by a human accountant.\n> - **NEVER** fabricate regulations; rely only on what you find via the Retriever Agent.\n> - Clearly identify when human confirmation is needed (especially for fields with low confidence).\n>\n>Do not include explanations, formatting instructions, or commentary outside the final JSON outp\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        600,
+        320
+      ],
+      "id": "39db8bd7-4e52-414f-bc20-4954360d7664",
+      "name": "Orchestrator Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        580,
+        520
+      ],
+      "id": "55e19227-3362-452f-97c7-90ea477a3d49",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "xosb0xNXv1U0bSvr",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputString = $input.first().json.output\nconst inputStringLength = inputString.length\nconst validJsonString = inputString.substring(8, inputStringLength - 4)\nreturn {\"output\": JSON.parse(validJsonString)}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        960,
+        320
+      ],
+      "id": "73467f18-f4b7-4f40-ad4f-a19703a2cc15",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to search for information on Google. Use this tool to verify or infer missing details (e.g., to determine if an item is a product or a service, or whether a vendor is registered in a specific country).",
+        "workflowId": {
+          "__rl": true,
+          "value": "uz7rDZMnu56S7H3e",
+          "mode": "list",
+          "cachedResultName": "Google Search and Scrape"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        380,
+        540
+      ],
+      "id": "e4004011-70d7-441e-a72d-07906421fe27",
+      "name": "Google Search"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "Document",
+        "options": {}
+      },
+      "id": "e0f1dcac-fa78-4839-b1f7-29e3ea3b68fd",
+      "name": "Extract PDF Text1",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -1040,
+        580
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -440,
+        320
+      ],
+      "id": "3286965b-4ffd-4d1d-8063-efb5481c56fc",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "content": "## Main Document Verification Workflow",
+        "height": 667,
+        "width": 2913,
+        "color": 4
+      },
+      "id": "b27665ab-3f14-495c-ad85-3fb7f6f644c3",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1660,
+        80
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Retriever Agent\n\nThis is for display purpose. To edit the retriever agent, edit the subworkflow \"Retriever Agent\"",
+        "height": 700,
+        "width": 1060,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        720,
+        520
+      ],
+      "typeVersion": 1,
+      "id": "3c1ac55c-2b42-4aaa-b00e-c503952c8d07",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "options": {
+          "systemMessage": "You are an intelligent AI agent tasked with retrieving as much relevant and useful information as possible from a knowledge graph via an API call.\n\nYou have access to one tool: `http_call`, which queries the knowledge graph API. It accepts a single parameter called `query`. The API will return a structured response containing data such as related documents, entities, and their relationships.\n\n**When given a `query`:**\n\n1. Understand the intent behind the input and reformulate it if necessary to improve relevance.\n2. Use the `http_call` tool by passing the refined query string.\n3. Analyze the API response carefully. Look for:\n\n   * Key documents or summaries\n   * Named entities of interest\n   * Graph-based relationships or links between entities\n4. Synthesize this information into a concise and informative answer, including summaries, explanations of relationships, and any insights relevant to the user's query.\n\nBe thorough, thoughtful, and ensure the information returned is as complete and context-rich as possible. If the result is ambiguous or incomplete, consider rephrasing and issuing a follow-up `http_call`.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        780
+      ],
+      "id": "ffc48fbd-b782-403c-b0e6-f8044fa57e13",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "toolDescription": "This tool allows the agent to call an external API endpoint that interfaces with a knowledge graph. The agent must pass a single query parameter named query containing the user's input or an intelligently reformulated question. The API will respond with relevant data from the knowledge graph, including documents, entities, and relationships.",
+        "url": "http://localhost:8000/query",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', ``, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        1400,
+        1000
+      ],
+      "id": "660e143e-2566-42cd-b635-2cfb6d8b5d1a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        980
+      ],
+      "id": "4ea757be-4216-46da-9f34-537787875683",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "xosb0xNXv1U0bSvr",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to query the Knowledge Graph",
+        "workflowId": {
+          "__rl": true,
+          "value": "H9MGpIDOCj5g2CRS",
+          "mode": "list",
+          "cachedResultName": "Retriever Agent HTTP"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        700
+      ],
+      "id": "8b75188b-c311-4657-a8f9-9532f474a621",
+      "name": "Call n8n Workflow Tool"
+    }
+  ],
+  "pinData": {
+    "Transcribe to Markdown": [
+      {
+        "json": {
+          "text": "# Receipt\n\nInvoice number MJ1OCLTE-0001\nReceipt number 2407-0546\nDate paid May 14, 2025\nPayment method Visa - 6908\n\nAgentHub Canada Inc.\n56a Mill Street East\nUnit 293\nActon Ontario L7J1H3\nCanada\n+1 438-882-1861\n\nBill to\nnapatsri@scg.com\n\n$97.00 paid on May 14, 2025\n\n| Description | Qty | Unit price | Amount |\n| ----------- | ----------- | ----------- | ----------- |\n| Gumloop Starter Plan May 14 - Jun 14, 2025 | 30,000 |  | $97.00 |\n| First 30000 | 30,000 | $0.00 | $0.00 |\n| Flat fee for first 30000 | 0 |  | $97.00 |\n\nSubtotal $97.00\nTotal $97.00\nAmount paid $97.00\n\n<image of logo>\n\n2407-0546 · $97.00 paid on May 14, 2025 Page 1 of 1"
+        }
+      }
+    ],
+    "Extraction and Classification Agent": [
+      {
+        "json": {
+          "output": "```json\n{\n  \"เลขประจำตัวผู้เสียภาษี\": {\n    \"value\": null,\n    \"confidence\": 0.1\n  },\n  \"วันที่ในเอกสาร\": {\n    \"value\": \"2025-05-14\",\n    \"confidence\": 0.95\n  },\n  \"มูลค่า\": {\n    \"value\": 97.00,\n    \"confidence\": 0.95\n  },\n  \"คำอธิบายสินค้า/บริการ\": {\n    \"value\": \"Gumloop Starter Plan May 14 - Jun 14, 2025\",\n    \"confidence\": 0.9\n  },\n  \"สกุลเงิน\": {\n    \"value\": \"USD\",\n    \"confidence\": 0.9\n  },\n  \"ชื่อผู้ขาย/ลูกค้า\": {\n    \"value\": \"AgentHub Canada Inc.\",\n    \"confidence\": 0.95\n  },\n  \"ประเภทเอกสาร\": {\n    \"value\": \"Receipt\",\n    \"confidence\": 0.95\n  },\n  \"ประเทศของคู่ค้า\": {\n    \"value\": \"Canada\",\n    \"confidence\": 0.95\n  },\n  \"หมวดหมู่สินค้า/บริการ\": {\n    \"value\": \"Software/SaaS\",\n    \"confidence\": 0.85\n  },\n  \"บริบทภายในกิจการ\": {\n    \"ชื่อบริษัทหรือสาขา\": {\n      \"value\": \"SCG\",\n      \"confidence\": 0.7\n    },\n    \"ประเภทธุรกิจ\": {\n      \"value\": \"Software/SaaS provider (AgentHub Canada Inc.)\",\n      \"confidence\": 0.8\n    },\n    \"VAT registration status\": {\n      \"value\": \"Not explicitly stated on receipt, Canadian GST/HST likely applies to AgentHub.\",\n      \"confidence\": 0.6\n    }\n  },\n  \"regulation_flags\": [\n    {\n      \"note\": \"บริการจากต่างประเทศ อาจต้องจัดเก็บ VAT แทน (Service from abroad may require reverse-charge VAT in Thailand).\",\n      \"confidence\": 0.9\n    }\n  ]\n}\n```"
+        }
+      }
+    ],
+    "Code": [
+      {
+        "json": {
+          "output": {
+            "เลขประจำตัวผู้เสียภาษี": {
+              "value": null,
+              "confidence": 0.1
+            },
+            "วันที่ในเอกสาร": {
+              "value": "2025-05-14",
+              "confidence": 0.95
+            },
+            "มูลค่า": {
+              "value": 97,
+              "confidence": 0.95
+            },
+            "คำอธิบายสินค้า/บริการ": {
+              "value": "Gumloop Starter Plan May 14 - Jun 14, 2025",
+              "confidence": 0.9
+            },
+            "สกุลเงิน": {
+              "value": "USD",
+              "confidence": 0.9
+            },
+            "ชื่อผู้ขาย/ลูกค้า": {
+              "value": "AgentHub Canada Inc.",
+              "confidence": 0.95
+            },
+            "ประเภทเอกสาร": {
+              "value": "Receipt",
+              "confidence": 0.95
+            },
+            "ประเทศของคู่ค้า": {
+              "value": "Canada",
+              "confidence": 0.95
+            },
+            "หมวดหมู่สินค้า/บริการ": {
+              "value": "Software/SaaS",
+              "confidence": 0.85
+            },
+            "บริบทภายในกิจการ": {
+              "ชื่อบริษัทหรือสาขา": {
+                "value": "SCG",
+                "confidence": 0.7
+              },
+              "ประเภทธุรกิจ": {
+                "value": "Software/SaaS provider (AgentHub Canada Inc.)",
+                "confidence": 0.8
+              },
+              "VAT registration status": {
+                "value": "Not explicitly stated on receipt, Canadian GST/HST likely applies to AgentHub.",
+                "confidence": 0.6
+              }
+            },
+            "regulation_flags": [
+              {
+                "note": "บริการจากต่างประเทศ อาจต้องจัดเก็บ VAT แทน (Service from abroad may require reverse-charge VAT in Thailand).",
+                "confidence": 0.9
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Sort Pages": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Images To List": {
+      "main": [
+        [
+          {
+            "node": "Sort Pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Zip File": {
+      "main": [
+        [
+          {
+            "node": "Images To List",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Split PDF into Images",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract PDF Text1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split PDF into Images": {
+      "main": [
+        [
+          {
+            "node": "Extract Zip File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraction and Classification Agent": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Orchestrator Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Extraction and Classification Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe to Markdown": {
+      "main": [
+        [
+          {
+            "node": "Extraction and Classification Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Transcribe to Markdown",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Orchestrator Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Orchestrator Agent": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Search": {
+      "ai_tool": [
+        [
+          {
+            "node": "Extraction and Classification Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Text1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Transcribe to Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call n8n Workflow Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Orchestrator Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a7d58ab2-47dd-4894-b20f-c2667c6dd397",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "24cb73b55c22d9657b5fdc11799f6c92936b55c967240a9d40cd299a6a7a255a"
+  },
+  "id": "B5slnqkAK1UbbXYG",
+  "tags": []
+}

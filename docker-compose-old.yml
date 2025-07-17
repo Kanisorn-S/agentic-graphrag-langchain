@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  neo4j:
+    image: neo4j:2025.05.1-community
+    ports:
+      - 7474:7474
+      - 7687:7687
+    restart: unless-stopped
+    environment:
+      - NEO4J_AUTH=neo4j/testpassword
+    volumes:
+      - ./db/data:/data
+      - ./db/logs:/logs
+      - ./db/conf:/conf
+      - ./db/plugins:/plugins
+  
+  # db:
+  #   hostname: db
+  #   image: ankane/pgvector 
+  #   ports:
+  #     - 5555:5432
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_DB=vector_db
+  #     - POSTGRES_USER=testuser
+  #     - POSTGRES_PASSWORD=testpwd 
+  #     - POSTGRES_HOST_AUTH_METHOD=trust
+  #   volumes:
+  #     - ./pgdata:/var/lib/postgresql/data
+  #     - ./init.sql:/docker-entrypoint-initdb.d/init.sql

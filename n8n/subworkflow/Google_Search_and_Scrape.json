@@ -1,0 +1,664 @@
+{
+  "name": "Google Search and Scrape",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -300,
+        60
+      ],
+      "id": "8a86a992-0dc5-4c06-b0ab-402c61a13af3",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "serpApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $json.query }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -80,
+        60
+      ],
+      "id": "a2840649-1f55-438c-967b-8984ce70c35e",
+      "name": "HTTP Request",
+      "credentials": {
+        "serpApi": {
+          "id": "8nvfzX29Z6G07hMu",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const relatedQuestions = $input.first().json.related_questions\nlet results = []\nfor (const relatedQuestion of relatedQuestions) {\n  const result = {\n    \"question\": relatedQuestion.question,\n    \"answer\": relatedQuestion.snippet\n  }\n  results.push(result)\n}\nreturn {\"result\": results}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        140,
+        60
+      ],
+      "id": "38643248-15fd-4264-baaa-b9578d52e32e",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "content": "## Input\n- Query to search Google",
+        "height": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        -100
+      ],
+      "typeVersion": 1,
+      "id": "441cc239-2044-4974-a2d3-134dd7e4c126",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## SerpAPI to Search Google\n",
+        "height": 320,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -140,
+        -100
+      ],
+      "typeVersion": 1,
+      "id": "42ad72b5-e924-4f2e-8c95-4919bdbfb4f8",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Format Output\n- AI Overview\n- List of titles and links",
+        "height": 320,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        120,
+        -100
+      ],
+      "typeVersion": 1,
+      "id": "51e41b2c-0137-4d29-9d33-0c93883ccc34",
+      "name": "Sticky Note2"
+    }
+  ],
+  "pinData": {
+    "HTTP Request": [
+      {
+        "json": {
+          "search_metadata": {
+            "id": "686699315c26221917a4b5dd",
+            "status": "Success",
+            "json_endpoint": "https://serpapi.com/searches/9697f5701278bb03/686699315c26221917a4b5dd.json",
+            "pixel_position_endpoint": "https://serpapi.com/searches/9697f5701278bb03/686699315c26221917a4b5dd.json_with_pixel_position",
+            "created_at": "2025-07-03 14:52:33 UTC",
+            "processed_at": "2025-07-03 14:52:33 UTC",
+            "google_url": "https://www.google.com/search?q=Gumloop&oq=Gumloop&sourceid=chrome&ie=UTF-8",
+            "raw_html_file": "https://serpapi.com/searches/9697f5701278bb03/686699315c26221917a4b5dd.html",
+            "total_time_taken": 4.84
+          },
+          "search_parameters": {
+            "engine": "google",
+            "q": "Gumloop",
+            "google_domain": "google.com",
+            "device": "desktop"
+          },
+          "search_information": {
+            "query_displayed": "Gumloop",
+            "total_results": 0,
+            "time_taken_displayed": 0.09,
+            "organic_results_state": "Results for exact spelling"
+          },
+          "inline_videos": [
+            {
+              "position": 1,
+              "title": "AI Automation/Gumloop Live Workshop #1",
+              "link": "https://www.youtube.com/watch?v=PjT1XVeSKsw&pp=0gcJCfwAo7VqN5tD",
+              "thumbnail": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/2fd189403057d6238a7d2f872642b5227e6d1291f3d643ee90bb2a4db71299e3.png",
+              "channel": "Gumloop",
+              "duration": "1:00:48",
+              "platform": "YouTube",
+              "key_moments": [
+                {
+                  "time": "01:08",
+                  "title": "The Difference between Ai Agents and Ai Workflow Automation",
+                  "link": "https://www.youtube.com/watch?v=PjT1XVeSKsw&pp=0gcJCfwAo7VqN5tD&t=68"
+                },
+                {
+                  "time": "04:11",
+                  "title": "What Should You Automate",
+                  "link": "https://www.youtube.com/watch?v=PjT1XVeSKsw&pp=0gcJCfwAo7VqN5tD&t=251"
+                },
+                {
+                  "time": "08:16",
+                  "title": "Website Scraper",
+                  "link": "https://www.youtube.com/watch?v=PjT1XVeSKsw&pp=0gcJCfwAo7VqN5tD&t=496"
+                },
+                {
+                  "time": "11:43",
+                  "title": "Add a Google Sheet Writer",
+                  "link": "https://www.youtube.com/watch?v=PjT1XVeSKsw&pp=0gcJCfwAo7VqN5tD&t=703"
+                },
+                {
+                  "time": "23:25",
+                  "title": "Extract Headcount",
+                  "link": "https://www.youtube.com/watch?v=PjT1XVeSKsw&pp=0gcJCfwAo7VqN5tD&t=1405"
+                },
+                {
+                  "time": "32:55",
+                  "title": "Triggers",
+                  "link": "https://www.youtube.com/watch?v=PjT1XVeSKsw&pp=0gcJCfwAo7VqN5tD&t=1975"
+                },
+                {
+                  "time": "35:17",
+                  "title": "Ai Content Generation",
+                  "link": "https://www.youtube.com/watch?v=PjT1XVeSKsw&pp=0gcJCfwAo7VqN5tD&t=2117"
+                },
+                {
+                  "time": "44:44",
+                  "title": "Error Shield",
+                  "link": "https://www.youtube.com/watch?v=PjT1XVeSKsw&pp=0gcJCfwAo7VqN5tD&t=2684"
+                },
+                {
+                  "time": "47:40",
+                  "title": "Categorizer Node",
+                  "link": "https://www.youtube.com/watch?v=PjT1XVeSKsw&pp=0gcJCfwAo7VqN5tD&t=2860"
+                },
+                {
+                  "time": "59:36",
+                  "title": "Any Plans To Make It Possible To Create a New Ai Assistant from a Workflow",
+                  "link": "https://www.youtube.com/watch?v=PjT1XVeSKsw&pp=0gcJCfwAo7VqN5tD&t=3576"
+                }
+              ]
+            },
+            {
+              "position": 2,
+              "title": "How I automated my YouTube | Gumloop tutorial | No Code",
+              "link": "https://www.youtube.com/watch?v=g53BIZX9Hag",
+              "thumbnail": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/2fd189403057d62358bbc156cd5f678977643157d8c3c2bffb7e844f7b30f8fe.jpeg",
+              "channel": "Harshit Tyagi",
+              "duration": "24:56",
+              "platform": "YouTube"
+            },
+            {
+              "position": 3,
+              "title": "Getting started with Gumloop: Flows, nodes & AI",
+              "link": "https://www.youtube.com/watch?v=pNjZhhG00yk",
+              "thumbnail": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/2fd189403057d6235d9fd920ac57f35b3f611ae893e7680a9ed62c17a822a97a.jpeg",
+              "channel": "Gumloop",
+              "duration": "4:43",
+              "platform": "YouTube"
+            }
+          ],
+          "short_videos": [
+            {
+              "position": 1,
+              "title": "I Built Deep Research that Beats Grok (Gumloop Tutorial)",
+              "source": "YouTube",
+              "profile_name": "Mike Futia | AI Automation Made Easy",
+              "extensions": [
+                "Mike Futia | AI Automation Made Easy"
+              ],
+              "source_logo": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/4be9fbc49a3ee94abe197002a2ec3acc5d30b01c264eccde4e2b0cbc266f2d36.png",
+              "clip": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcTTTcVQ-g1iJyx20zAZG1rvIlboCKw69J_eEA",
+              "date": "Apr 1, 2025",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgEem5rqjKkSth62AQlZf7sjW7lPnNAPFBs4_p6rupfcFvDQ&s",
+              "link": "https://www.youtube.com/shorts/0NUlUifsR0c"
+            },
+            {
+              "position": 2,
+              "title": "gumloop ai assistant for podcast content creation",
+              "source": "YouTube",
+              "profile_name": "michael raspuzzi",
+              "extensions": [
+                "michael raspuzzi"
+              ],
+              "source_logo": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/4be9fbc49a3ee94a209bbf404e552cebe48ab0d9e98183ca0cf935487eee3018.png",
+              "clip": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcRmKUkXUlFdmm_-lvPa5ZyE7LaF2z78miz7vQ",
+              "date": "Mar 26, 2025",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdWRalmVOsOvw684vbLeT3He8Ex4Z9rL9AyjRqSXoJ0iHrhw&s",
+              "link": "https://www.youtube.com/watch?v=OjnZPIIHFTc"
+            },
+            {
+              "position": 3,
+              "title": "Gumloop AI: Easy AI Automation, or Not?",
+              "source": "YouTube",
+              "profile_name": "GrowthHakka",
+              "extensions": [
+                "GrowthHakka"
+              ],
+              "source_logo": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/4be9fbc49a3ee94ae763309cb329607111079b610479a4516a0ffe8885d54859.png",
+              "clip": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcTqjDRy57J_n9vZ8wBFzJlCROoahiX-CswLJg",
+              "date": "May 22, 2025",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhU6P6P-1Bd9674urZNCeBHybPHxZcxF2ASoFBluRRA3wN_Q&s",
+              "link": "https://www.youtube.com/shorts/1oLMowgju6E"
+            },
+            {
+              "position": 4,
+              "title": "Understand ANY Document with Gumloop (No n8n Required ...",
+              "source": "YouTube",
+              "profile_name": "Mike Futia | AI Automation Made Easy",
+              "extensions": [
+                "Mike Futia | AI Automation Made Easy"
+              ],
+              "source_logo": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/4be9fbc49a3ee94a1156b9bb974fb607e9c647e1876eecb5f5aab05c66bb5919.png",
+              "clip": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcT_eMpNyT23MHB-JitnMRoiPNPL2rTXk-w_3g",
+              "date": "Mar 27, 2025",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDmIFpoBige-Zn44xAJXhok9JzNUKC374UE-pmT5IuFVJrog&s",
+              "link": "https://www.youtube.com/watch?v=OUIlKnw-7sU"
+            },
+            {
+              "position": 5,
+              "title": "Gumloop: AI-First Automation - No API Keys Needed!",
+              "source": "YouTube",
+              "profile_name": "GrowthHakka",
+              "extensions": [
+                "GrowthHakka"
+              ],
+              "source_logo": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/4be9fbc49a3ee94a5c05a1ab0c061ac0674faf404bc7d42124b4badd33d85ddd.png",
+              "clip": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcR15k9uZHuKSc1BOltfssvV2Xu72cJL3x-KFQ",
+              "date": "May 26, 2025",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQgpjx8esLw-zHo-CpAffOtACUfrH5bc3345HIQoLVHAmxIw&s",
+              "link": "https://www.youtube.com/shorts/NotgZFwihRg"
+            },
+            {
+              "position": 6,
+              "title": "Gumloop: No-Code Automation Made Easy",
+              "source": "YouTube",
+              "profile_name": "GrowthHakka",
+              "extensions": [
+                "GrowthHakka"
+              ],
+              "source_logo": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/4be9fbc49a3ee94a8f091ca253413c664b0c1eb92dd87f2cf419a43c8cd7c2fe.png",
+              "clip": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcT87x2Xu9SrpE9nMsbmX-HuB2gnNnzLWcP7sw",
+              "date": "Mar 24, 2025",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaOGzaFN6SZ5yO57wr91TpqydG28-r_H0F6mYHjcIJQPR5HA&s",
+              "link": "https://www.youtube.com/shorts/3e0BYVD7gPU"
+            },
+            {
+              "position": 7,
+              "title": "Gumloop Explained: Build AI Workflows Without Code in 2025 ...",
+              "source": "YouTube",
+              "profile_name": "EnGenius AI",
+              "extensions": [
+                "EnGenius AI"
+              ],
+              "source_logo": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/4be9fbc49a3ee94aabb5a2a0983ae16b6d16a0e0b82e5dc72834dfc24747f5eb.png",
+              "clip": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcT0M4slRt1Vr3oeR0g-_5D6ItFHZbpsKgOcXw",
+              "date": "May 18, 2025",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgrf2m-jl2lVhIM8o1t5ghSL8EWyxuq5WTGoTUOoz63MBjaIjmUM9kvpKmbHkB3te7rrX3jtLEU8up&s",
+              "link": "https://www.youtube.com/shorts/BKMXB0axOJY"
+            },
+            {
+              "position": 8,
+              "title": "Gumloop over Zapier any day!",
+              "source": "YouTube",
+              "profile_name": "PRETTY PROMPTED",
+              "extensions": [
+                "PRETTY PROMPTED"
+              ],
+              "source_logo": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/4be9fbc49a3ee94ab0d085f5afdc54156e798c5defabc070be40ab7bccb37e63.png",
+              "clip": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcQ713aj_EJYW7LpM_JxnSk5n0NWDEg634mnjg",
+              "date": "Apr 11, 2025",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmrTZR0ujUokQPjHJcRbyIAaIdNRCBeSqRaDfpmDY1hdkiRg&s",
+              "link": "https://www.youtube.com/watch?v=5cSx9DlGADs"
+            },
+            {
+              "position": 9,
+              "title": "\"Gumloop AI: Automate Anything with No-Code AI Brilliance \"",
+              "source": "YouTube",
+              "profile_name": "AI tools Explained",
+              "extensions": [
+                "AI tools Explained"
+              ],
+              "source_logo": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/4be9fbc49a3ee94ab4496daeb82f4044cf87903b7d1f723e6e3f7234c27725ad.png",
+              "date": "Apr 5, 2025",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7we9sOLHCfsPxZ9YWolQmPkUO__diEveY0DuzSVI8WH9itA&s",
+              "link": "https://www.youtube.com/watch?v=D0i6-oWsBO8"
+            },
+            {
+              "position": 10,
+              "title": "Ai tools you should know! Part 8. Automate any workflow with ...",
+              "source": "YouTube",
+              "profile_name": "Blake Davis",
+              "extensions": [
+                "Blake Davis"
+              ],
+              "source_logo": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/4be9fbc49a3ee94aad2c8a6bb10a11af07b0ede436e6b6968fd1b7597bfef332.png",
+              "clip": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcSKDejaF8EsOnbIrj2BFuoPEb8SNFlE7AnpxQ",
+              "date": "Jun 30, 2025",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuTU6ufAbfSYnVYdcVJaI2JyzzzDCl4j5rW66k5Cm010X3Uw&s",
+              "link": "https://www.youtube.com/shorts/bYOr67Mxcdg"
+            }
+          ],
+          "related_questions": [
+            {
+              "question": "What is Gumloop used for?",
+              "snippet": "Gumloop is a platform for automating repetitive and complex workflows end-to-end with AI. Builders drag, drop, and connect modular components onto a canvas to build powerful automations.",
+              "title": "Gumloop: A no-code platform for automating workflows with AI",
+              "link": "https://www.ycombinator.com/companies/gumloop#:~:text=Gumloop%20is%20a%20platform%20for,canvas%20to%20build%20powerful%20automations.",
+              "displayed_link": "https://www.ycombinator.com › companies › gumloop",
+              "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJUR3QwWDNaSVYyMTRYMmc1TldveloxRlVkMlZTUlY5Q2F6SlJka3RWUTFnNGFUaFlabXgyTmpCSFJscE5hemw1YlZKMVlsZzJkSEV4VkRjMFJEbEVaMlJSYW5GR2VIWkVXQzB3VW14VWRVdG9aa1JTVHkweWFEZGlVbXB1VjFOTVVSSVhUVnBzYldGUExYQk1ORFpZYTFCSlVEUTJUM0V0VVhjYUlrRkdUVUZIUjNCeFEzSmFUVWxVZUY5WmQwbFZPRk5CUmpVMmRtUndZVk5TVWxFIiwiZmN2IjoiMyIsImVpIjoiTVpsbWFPLXBMNDZYa1BJUDQ2T3EtUXciLCJxYyI6IkNnZG5kVzFzYjI5d0VBQTRBWDE0eVJzXyIsInF1ZXN0aW9uIjoiV2hhdCBpcyBHdW1sb29wIHVzZWQgZm9yPyIsImxrIjoiR2hoM2FHRjBJR2x6SUdkMWJXeHZiM0FnZFhObFpDQm1iM0kiLCJicyI6ImMtT3k0cElNejBnc1VjZ3NWbkF2emMzSnp5OVFLQzFPVFZGSXl5LXlsM2lxYWlRbEpWRU9sVTlIay1leTQ1TDJ5QzlYeUMxTnpsQkl5VTlGbUpDY1gxeGlMekZUelVoR1Npb0RSVVU2a2dvdUV5NHhrUDZTZkpDUmNNMk9udllTODdpTnhLVkVNeENTTUgySm1WejJYTEl3RjRPRmN2TlRVaFV5ODJCSzdDVmUtQnBKUzBuQ2RKU2pxeFZnQkFBIiwiaWQiOiJmY19NWmxtYU8tcEw0NlhrUElQNDZPcS1Rd18yIn0=",
+              "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJUR3QwWDNaSVYyMTRYMmc1TldveloxRlVkMlZTUlY5Q2F6SlJka3RWUTFnNGFUaFlabXgyTmpCSFJscE5hemw1YlZKMVlsZzJkSEV4VkRjMFJEbEVaMlJSYW5GR2VIWkVXQzB3VW14VWRVdG9aa1JTVHkweWFEZGlVbXB1VjFOTVVSSVhUVnBzYldGUExYQk1ORFpZYTFCSlVEUTJUM0V0VVhjYUlrRkdUVUZIUjNCeFEzSmFUVWxVZUY5WmQwbFZPRk5CUmpVMmRtUndZVk5TVWxFIiwiZmN2IjoiMyIsImVpIjoiTVpsbWFPLXBMNDZYa1BJUDQ2T3EtUXciLCJxYyI6IkNnZG5kVzFzYjI5d0VBQTRBWDE0eVJzXyIsInF1ZXN0aW9uIjoiV2hhdCBpcyBHdW1sb29wIHVzZWQgZm9yPyIsImxrIjoiR2hoM2FHRjBJR2x6SUdkMWJXeHZiM0FnZFhObFpDQm1iM0kiLCJicyI6ImMtT3k0cElNejBnc1VjZ3NWbkF2emMzSnp5OVFLQzFPVFZGSXl5LXlsM2lxYWlRbEpWRU9sVTlIay1leTQ1TDJ5QzlYeUMxTnpsQkl5VTlGbUpDY1gxeGlMekZUelVoR1Npb0RSVVU2a2dvdUV5NHhrUDZTZkpDUmNNMk9udllTODdpTnhLVkVNeENTTUgySm1WejJYTEl3RjRPRmN2TlRVaFV5ODJCSzdDVmUtQnBKUzBuQ2RKU2pxeFZnQkFBIiwiaWQiOiJmY19NWmxtYU8tcEw0NlhrUElQNDZPcS1Rd18yIn0%3D"
+            },
+            {
+              "question": "How much does Gumloop cost?",
+              "snippet": "Gumloop starts free, with paid tiers from $97/month for 30,000 credits. But it isn't easy to understand how credits are used. Whether you're automating lead enrichment, scraping workflows, or internal ops, pricing should be transparent, so you know what you're paying for.",
+              "title": "Gumloop Pricing Simplified for 2025 - Lindy",
+              "date": "1 day ago",
+              "link": "https://www.lindy.ai/blog/gumloop-pricing#:~:text=Gumloop%20starts%20free%2C%20with%20paid,what%20you're%20paying%20for.",
+              "displayed_link": "https://www.lindy.ai › blog › gumloop-pricing",
+              "source_logo": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/200017e31805d94d775cc5fd8aac2bb1775606c295bbfee069eb16adce180979.png",
+              "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJUR3QwWDNaSVYyMTRYMmc1TldveloxRlVkMlZTUlY5Q2F6SlJka3RWUTFnNGFUaFlabXgyTmpCSFJscE5hemw1YlZKMVlsZzJkSEV4VkRjMFJEbEVaMlJSYW5GR2VIWkVXQzB3VW14VWRVdG9aa1JTVHkweWFEZGlVbXB1VjFOTVVSSVhUVnBzYldGUExYQk1ORFpZYTFCSlVEUTJUM0V0VVhjYUlrRkdUVUZIUjNCeFEzSmFUVWxVZUY5WmQwbFZPRk5CUmpVMmRtUndZVk5TVWxFIiwiZmN2IjoiMyIsImVpIjoiTVpsbWFPLXBMNDZYa1BJUDQ2T3EtUXciLCJxYyI6IkNnZG5kVzFzYjI5d0VBQTRBWDE0eVJzXyIsInF1ZXN0aW9uIjoiSG93IG11Y2ggZG9lcyBHdW1sb29wIGNvc3Q/IiwibGsiOiJHaHBvYjNjZ2JYVmphQ0JrYjJWeklHZDFiV3h2YjNBZ1kyOXpkQSIsImJzIjoiYy1PeTRwSU16MGdzVWNnc1ZuQXZ6YzNKenk5UUtDMU9UVkZJeXkteWwzaXFhaVFsSlZFT2xVOUhrLWV5NDVMMnlDOVh5QzFOemxCSXlVOUZtSkNjWDF4aUx6RlR6VWhHU2lvRFJVVTZrZ291RXk0eGtQNlNmSkNSY00yT252WVM4N2lOeEtWRU14Q1NNSDJKbVZ6MlhMSXdGNE9GY3ZOVFVoVXk4MkJLN0NWZS1CcEpTMG5DZEpTanF4VmdCQUEiLCJpZCI6ImZjX01abG1hTy1wTDQ2WGtQSVA0Nk9xLVF3XzIifQ==",
+              "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJUR3QwWDNaSVYyMTRYMmc1TldveloxRlVkMlZTUlY5Q2F6SlJka3RWUTFnNGFUaFlabXgyTmpCSFJscE5hemw1YlZKMVlsZzJkSEV4VkRjMFJEbEVaMlJSYW5GR2VIWkVXQzB3VW14VWRVdG9aa1JTVHkweWFEZGlVbXB1VjFOTVVSSVhUVnBzYldGUExYQk1ORFpZYTFCSlVEUTJUM0V0VVhjYUlrRkdUVUZIUjNCeFEzSmFUVWxVZUY5WmQwbFZPRk5CUmpVMmRtUndZVk5TVWxFIiwiZmN2IjoiMyIsImVpIjoiTVpsbWFPLXBMNDZYa1BJUDQ2T3EtUXciLCJxYyI6IkNnZG5kVzFzYjI5d0VBQTRBWDE0eVJzXyIsInF1ZXN0aW9uIjoiSG93IG11Y2ggZG9lcyBHdW1sb29wIGNvc3Q%2FIiwibGsiOiJHaHBvYjNjZ2JYVmphQ0JrYjJWeklHZDFiV3h2YjNBZ1kyOXpkQSIsImJzIjoiYy1PeTRwSU16MGdzVWNnc1ZuQXZ6YzNKenk5UUtDMU9UVkZJeXkteWwzaXFhaVFsSlZFT2xVOUhrLWV5NDVMMnlDOVh5QzFOemxCSXlVOUZtSkNjWDF4aUx6RlR6VWhHU2lvRFJVVTZrZ291RXk0eGtQNlNmSkNSY00yT252WVM4N2lOeEtWRU14Q1NNSDJKbVZ6MlhMSXdGNE9GY3ZOVFVoVXk4MkJLN0NWZS1CcEpTMG5DZEpTanF4VmdCQUEiLCJpZCI6ImZjX01abG1hTy1wTDQ2WGtQSVA0Nk9xLVF3XzIifQ%3D%3D"
+            },
+            {
+              "question": "How to use Gumloop AI?",
+              "snippet": "with AI. No coding required. Press enter or space to select a node.You can then use the arrow keys to move the node around. Press delete to remove it and escape to cancel.",
+              "title": "Gumloop | AI Automation Framework",
+              "link": "https://www.gumloop.com/#:~:text=with%20AI,No%20coding%20required.&text=Press%20enter%20or%20space%20to,it%20and%20escape%20to%20cancel.",
+              "displayed_link": null,
+              "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJUR3QwWDNaSVYyMTRYMmc1TldveloxRlVkMlZTUlY5Q2F6SlJka3RWUTFnNGFUaFlabXgyTmpCSFJscE5hemw1YlZKMVlsZzJkSEV4VkRjMFJEbEVaMlJSYW5GR2VIWkVXQzB3VW14VWRVdG9aa1JTVHkweWFEZGlVbXB1VjFOTVVSSVhUVnBzYldGUExYQk1ORFpZYTFCSlVEUTJUM0V0VVhjYUlrRkdUVUZIUjNCeFEzSmFUVWxVZUY5WmQwbFZPRk5CUmpVMmRtUndZVk5TVWxFIiwiZmN2IjoiMyIsImVpIjoiTVpsbWFPLXBMNDZYa1BJUDQ2T3EtUXciLCJxYyI6IkNnZG5kVzFzYjI5d0VBQTRBWDE0eVJzXyIsInF1ZXN0aW9uIjoiSG93IHRvIHVzZSBHdW1sb29wIEFJPyIsImxrIjoiR2hWb2IzY2dkRzhnZFhObElHZDFiV3h2YjNBZ1lXayIsImJzIjoiYy1PeTRwSU16MGdzVWNnc1ZuQXZ6YzNKenk5UUtDMU9UVkZJeXkteWwzaXFhaVFsSlZFT2xVOUhrLWV5NDVMMnlDOVh5QzFOemxCSXlVOUZtSkNjWDF4aUx6RlR6VWhHU2lvRFJVVTZrZ291RXk0eGtQNlNmSkNSY00yT252WVM4N2lOeEtWRU14Q1NNSDJKbVZ6MlhMSXdGNE9GY3ZOVFVoVXk4MkJLN0NWZS1CcEpTMG5DZEpTanF4VmdCQUEiLCJpZCI6ImZjX01abG1hTy1wTDQ2WGtQSVA0Nk9xLVF3XzIifQ==",
+              "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJUR3QwWDNaSVYyMTRYMmc1TldveloxRlVkMlZTUlY5Q2F6SlJka3RWUTFnNGFUaFlabXgyTmpCSFJscE5hemw1YlZKMVlsZzJkSEV4VkRjMFJEbEVaMlJSYW5GR2VIWkVXQzB3VW14VWRVdG9aa1JTVHkweWFEZGlVbXB1VjFOTVVSSVhUVnBzYldGUExYQk1ORFpZYTFCSlVEUTJUM0V0VVhjYUlrRkdUVUZIUjNCeFEzSmFUVWxVZUY5WmQwbFZPRk5CUmpVMmRtUndZVk5TVWxFIiwiZmN2IjoiMyIsImVpIjoiTVpsbWFPLXBMNDZYa1BJUDQ2T3EtUXciLCJxYyI6IkNnZG5kVzFzYjI5d0VBQTRBWDE0eVJzXyIsInF1ZXN0aW9uIjoiSG93IHRvIHVzZSBHdW1sb29wIEFJPyIsImxrIjoiR2hWb2IzY2dkRzhnZFhObElHZDFiV3h2YjNBZ1lXayIsImJzIjoiYy1PeTRwSU16MGdzVWNnc1ZuQXZ6YzNKenk5UUtDMU9UVkZJeXkteWwzaXFhaVFsSlZFT2xVOUhrLWV5NDVMMnlDOVh5QzFOemxCSXlVOUZtSkNjWDF4aUx6RlR6VWhHU2lvRFJVVTZrZ291RXk0eGtQNlNmSkNSY00yT252WVM4N2lOeEtWRU14Q1NNSDJKbVZ6MlhMSXdGNE9GY3ZOVFVoVXk4MkJLN0NWZS1CcEpTMG5DZEpTanF4VmdCQUEiLCJpZCI6ImZjX01abG1hTy1wTDQ2WGtQSVA0Nk9xLVF3XzIifQ%3D%3D"
+            },
+            {
+              "question": "What is loop mode in gumloop?",
+              "snippet": "Loop Mode allows nodes to process lists of inputs automatically, like a “for loop” in programming. Instead of processing one item at a time, nodes in Loop Mode can handle multiple items efficiently.",
+              "title": "Loop Mode - Gumloop",
+              "link": "https://docs.gumloop.com/core-concepts/loop_mode#:~:text=Loop%20Mode%20allows%20nodes%20to,can%20handle%20multiple%20items%20efficiently.",
+              "displayed_link": "https://docs.gumloop.com › core-concepts › loop_mode",
+              "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQS27pcVnrpp-2BFTDRaYWCL4dsytndpe1PCw5mbcrF&s",
+              "source_logo": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/200017e31805d94d775cc5fd8aac2bb145a29f4d8c83a07d312f252f774a1fa2.png",
+              "next_page_token": "eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJUR3QwWDNaSVYyMTRYMmc1TldveloxRlVkMlZTUlY5Q2F6SlJka3RWUTFnNGFUaFlabXgyTmpCSFJscE5hemw1YlZKMVlsZzJkSEV4VkRjMFJEbEVaMlJSYW5GR2VIWkVXQzB3VW14VWRVdG9aa1JTVHkweWFEZGlVbXB1VjFOTVVSSVhUVnBzYldGUExYQk1ORFpZYTFCSlVEUTJUM0V0VVhjYUlrRkdUVUZIUjNCeFEzSmFUVWxVZUY5WmQwbFZPRk5CUmpVMmRtUndZVk5TVWxFIiwiZmN2IjoiMyIsImVpIjoiTVpsbWFPLXBMNDZYa1BJUDQ2T3EtUXciLCJxYyI6IkNnZG5kVzFzYjI5d0VBQTRBWDE0eVJzXyIsInF1ZXN0aW9uIjoiV2hhdCBpcyBsb29wIG1vZGUgaW4gZ3VtbG9vcD8iLCJsayI6ImM1T1NUQ19OemNuUEwxQW96MGdzVWNnc1ZnQnpjdk5UVWdFIiwiYnMiOiJjLU95NHBJTXowZ3NVY2dzVm5BdnpjM0p6eTlRS0MxT1RWRkl5eS15bDNpcWFpUWxKVkVPbFU5SGstZXk0NUwyeUM5WHlDMU56bEJJeVU5Rm1KQ2NYMXhpTHpGVHpVaEdTaW9EUlVVNmtnb3VFeTR4a1A2U2ZKQ1JjTTJPbnZZUzg3aU54S1ZFTXhDU01IMkptVnoyWExJd0Y0T0Zjdk5UVWhVeTgyQks3Q1ZlLUJwSlMwbkNkSlNqcXhWZ0JBQSIsImlkIjoiZmNfTVpsbWFPLXBMNDZYa1BJUDQ2T3EtUXdfMiJ9",
+              "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google_related_questions&google_domain=google.com&next_page_token=eyJvbnMiOiIxMDA0MSIsImZjIjoiRXFFQkNtSkJUR3QwWDNaSVYyMTRYMmc1TldveloxRlVkMlZTUlY5Q2F6SlJka3RWUTFnNGFUaFlabXgyTmpCSFJscE5hemw1YlZKMVlsZzJkSEV4VkRjMFJEbEVaMlJSYW5GR2VIWkVXQzB3VW14VWRVdG9aa1JTVHkweWFEZGlVbXB1VjFOTVVSSVhUVnBzYldGUExYQk1ORFpZYTFCSlVEUTJUM0V0VVhjYUlrRkdUVUZIUjNCeFEzSmFUVWxVZUY5WmQwbFZPRk5CUmpVMmRtUndZVk5TVWxFIiwiZmN2IjoiMyIsImVpIjoiTVpsbWFPLXBMNDZYa1BJUDQ2T3EtUXciLCJxYyI6IkNnZG5kVzFzYjI5d0VBQTRBWDE0eVJzXyIsInF1ZXN0aW9uIjoiV2hhdCBpcyBsb29wIG1vZGUgaW4gZ3VtbG9vcD8iLCJsayI6ImM1T1NUQ19OemNuUEwxQW96MGdzVWNnc1ZnQnpjdk5UVWdFIiwiYnMiOiJjLU95NHBJTXowZ3NVY2dzVm5BdnpjM0p6eTlRS0MxT1RWRkl5eS15bDNpcWFpUWxKVkVPbFU5SGstZXk0NUwyeUM5WHlDMU56bEJJeVU5Rm1KQ2NYMXhpTHpGVHpVaEdTaW9EUlVVNmtnb3VFeTR4a1A2U2ZKQ1JjTTJPbnZZUzg3aU54S1ZFTXhDU01IMkptVnoyWExJd0Y0T0Zjdk5UVWhVeTgyQks3Q1ZlLUJwSlMwbkNkSlNqcXhWZ0JBQSIsImlkIjoiZmNfTVpsbWFPLXBMNDZYa1BJUDQ2T3EtUXdfMiJ9"
+            }
+          ],
+          "organic_results": [
+            {
+              "position": 1,
+              "title": "Gumloop | AI Automation Framework",
+              "link": "https://www.gumloop.com/",
+              "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.gumloop.com/&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8QFnoECAwQAQ",
+              "displayed_link": "https://www.gumloop.com",
+              "favicon": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/7fbf591c43b1fd5eb5832965725b09250e0d7f139b8de8e5085ba0fd105ccf3e.png",
+              "snippet": "Automate any workflow · with AI · Build complex workflows visually · No API keys needed to get started · Ready made components for advanced AI tasks · Create ...",
+              "sitelinks": {
+                "expanded": [
+                  {
+                    "title": "Pricing",
+                    "link": "https://www.gumloop.com/pricing",
+                    "snippet": "Enterprise · Concurrent Flow Runs · Concurrent List Steps · Event ..."
+                  },
+                  {
+                    "title": "Learn about Gumloop",
+                    "link": "https://www.gumloop.com/blog/about",
+                    "snippet": "Learn about Gumloop ... Gumloop is a platform for automating ..."
+                  },
+                  {
+                    "title": "AI Web Scraping",
+                    "link": "https://www.gumloop.com/solutions/ai-web-scraping",
+                    "snippet": "Automate any web scraping workflow with AI. Create your ..."
+                  },
+                  {
+                    "title": "SEO automation",
+                    "link": "https://www.gumloop.com/solutions/seo-automation",
+                    "snippet": "Repetitive, time-consuming tasks are the perfect candidates for ..."
+                  },
+                  {
+                    "title": "Social media",
+                    "link": "https://www.gumloop.com/solutions/automate-social-media",
+                    "snippet": "Automate social media moderation. Discover what people are ..."
+                  }
+                ]
+              },
+              "source": "Gumloop"
+            },
+            {
+              "position": 2,
+              "title": "Gumloop: A no-code platform for automating workflows ...",
+              "link": "https://www.ycombinator.com/companies/gumloop",
+              "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.ycombinator.com/companies/gumloop&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8QFnoECEkQAQ",
+              "displayed_link": "https://www.ycombinator.com › companies › gumloop",
+              "favicon": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/7fbf591c43b1fd5eb5832965725b0925216156aafaba2d35543a00965218e97c.png",
+              "snippet": "Gumloop is a platform for automating repetitive and complex workflows end-to-end with AI. Builders drag, drop, and connect modular components onto a canvas.",
+              "snippet_highlighted_words": [
+                "Gumloop"
+              ],
+              "source": "Y Combinator"
+            },
+            {
+              "position": 3,
+              "title": "Gumloop review: My honest thoughts about this AI tool",
+              "link": "https://www.marketermilk.com/blog/gumloop-review",
+              "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.marketermilk.com/blog/gumloop-review&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8QFnoECEYQAQ",
+              "displayed_link": "https://www.marketermilk.com › blog › gumloop-review",
+              "favicon": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/7fbf591c43b1fd5eb5832965725b09250412cfdaacd78e1ff8a176e92b812e29.png",
+              "date": "Jan 29, 2025",
+              "snippet": "At its core, Gumloop empowers anyone to become an AI Engineer without knowing how to code. It's for people like us who are good at marketing or ...",
+              "snippet_highlighted_words": [
+                "Gumloop empowers anyone to become an AI Engineer"
+              ],
+              "source": "Marketer Milk"
+            },
+            {
+              "position": 4,
+              "title": "🤖 Can Gumloop Compete with n8n? Trying to Pick the Best ...",
+              "link": "https://www.reddit.com/r/automation/comments/1j8ksg7/can_gumloop_compete_with_n8n_trying_to_pick_the/",
+              "redirect_link": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.reddit.com/r/automation/comments/1j8ksg7/can_gumloop_compete_with_n8n_trying_to_pick_the/&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8QFnoECEoQAQ",
+              "displayed_link": "20+ comments · 3 months ago",
+              "favicon": "https://serpapi.com/searches/686699315c26221917a4b5dd/images/7fbf591c43b1fd5eb5832965725b09259058c50572e9e89a50aa928e13f9fc2e.png",
+              "snippet": "I think N8N is more for professional that want to achieve complex tasks or Agents, where Gumloop meet all the good basic automation.",
+              "snippet_highlighted_words": [
+                "Gumloop"
+              ],
+              "source": "Reddit · r/automation"
+            }
+          ],
+          "perspectives": [
+            {
+              "author": "Karan Vaidya",
+              "source": "LinkedIn",
+              "extensions": [
+                "300+ reactions "
+              ],
+              "thumbnails": [
+                "https://serpapi.com/searches/686699315c26221917a4b5dd/images/c3df7fe86994911b3c1b75369c13dcda5bc3908f5aa1ecf567c64b4579183ab7.jpeg"
+              ],
+              "title": "I vibe coded Gumloop over the weekend!! Presenting Agent Flow - an open-source alternative to Gumloop! We built a free no-code AI Agent builder with Composio and LangChain's Langgraph that lets you automate workflows and complex agentic patterns wit",
+              "link": "https://www.linkedin.com/posts/kaavee315_i-vibe-coded-gumloop-over-the-weekend-presenting-activity-7337295851549081600-o-To",
+              "date": "4 weeks ago"
+            },
+            {
+              "author": "Simple Answers",
+              "source": "YouTube",
+              "extensions": [
+                "80+ views "
+              ],
+              "thumbnails": [
+                "https://serpapi.com/searches/686699315c26221917a4b5dd/images/c3df7fe86994911ba4eb8cf13d13796ccc568f81913393d31b37be2287543c72.jpeg"
+              ],
+              "title": "MAKE.COM VS GUMLOOP (WHICH AUTOMATION TOOL IS RIGHT FOR YOU?)",
+              "link": "https://www.youtube.com/watch?v=Sqbp_GD7eak",
+              "date": "1 month ago",
+              "video": "https://encrypted-vtbn0.gstatic.com/video?q=tbn:ANd9GcQWpxSgpfLoqqL4M4qE0bFi6N21gK40nYpq8A"
+            },
+            {
+              "author": "MAA1",
+              "source": "Medium",
+              "thumbnails": [
+                "https://serpapi.com/searches/686699315c26221917a4b5dd/images/c3df7fe86994911b47943d3ac089f90b3a9115846c7a50390e580959f81b1c5a.png"
+              ],
+              "title": "Gumloop (Product Review)",
+              "link": "https://maa1.medium.com/gumloop-product-review-d4fa709ba3c3",
+              "date": "1 week ago"
+            },
+            {
+              "author": "Gumloop",
+              "source": "LinkedIn",
+              "extensions": [
+                "3 reactions "
+              ],
+              "title": "Available in the OpenAI API means available in Gumloop. You can now use deep research in the Ask AI node when using OpenAI's o3 or 4o-mini models",
+              "link": "https://www.linkedin.com/posts/gumloop_available-in-the-openai-api-means-available-activity-7345974929294585857-2SVB",
+              "date": "1 day ago"
+            }
+          ],
+          "related_searches": [
+            {
+              "block_position": 1,
+              "query": "Gumloop extension",
+              "link": "https://www.google.com/search?sca_esv=8db88439da67627d&q=Gumloop+extension&sa=X&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q1QJ6BAhNEAE",
+              "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop+extension"
+            },
+            {
+              "block_position": 1,
+              "query": "Gumloop vs Make",
+              "link": "https://www.google.com/search?sca_esv=8db88439da67627d&q=Gumloop+vs+Make&sa=X&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q1QJ6BAhLEAE",
+              "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop+vs+Make"
+            },
+            {
+              "block_position": 1,
+              "query": "Gumloop funding",
+              "link": "https://www.google.com/search?sca_esv=8db88439da67627d&q=Gumloop+funding&sa=X&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q1QJ6BAhIEAE",
+              "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop+funding"
+            },
+            {
+              "block_position": 1,
+              "query": "Gumloop founder",
+              "link": "https://www.google.com/search?sca_esv=8db88439da67627d&q=Gumloop+founder&sa=X&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q1QJ6BAhHEAE",
+              "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop+founder"
+            },
+            {
+              "block_position": 1,
+              "query": "Gumloop AI",
+              "link": "https://www.google.com/search?sca_esv=8db88439da67627d&q=Gumloop+AI&sa=X&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q1QJ6BAhBEAE",
+              "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop+AI"
+            },
+            {
+              "block_position": 1,
+              "query": "Gumloop github",
+              "link": "https://www.google.com/search?sca_esv=8db88439da67627d&q=Gumloop+github&sa=X&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q1QJ6BAhAEAE",
+              "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop+github"
+            },
+            {
+              "block_position": 1,
+              "query": "Gumloop revenue",
+              "link": "https://www.google.com/search?sca_esv=8db88439da67627d&q=Gumloop+revenue&sa=X&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q1QJ6BAg_EAE",
+              "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop+revenue"
+            },
+            {
+              "block_position": 1,
+              "query": "Gumloop alternatives",
+              "link": "https://www.google.com/search?sca_esv=8db88439da67627d&q=Gumloop+alternatives&sa=X&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q1QJ6BAg9EAE",
+              "serpapi_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop+alternatives"
+            }
+          ],
+          "pagination": {
+            "current": 1,
+            "next": "https://www.google.com/search?q=Gumloop&sca_esv=8db88439da67627d&ei=MZlmaO-pL46XkPIP46Oq-Qw&start=10&sa=N&sstk=Ac65TH7LvvWopMqufmv_OHFh43gnmdhcW6UhebMLigXb3e2WhD5SpPRvKGKjM5hvY6kaIYE3CxIWykCJ-O_SqVQPptMQtQHBQ5U07Q&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q8NMDegQIORAW",
+            "other_pages": {
+              "2": "https://www.google.com/search?q=Gumloop&sca_esv=8db88439da67627d&ei=MZlmaO-pL46XkPIP46Oq-Qw&start=10&sa=N&sstk=Ac65TH7LvvWopMqufmv_OHFh43gnmdhcW6UhebMLigXb3e2WhD5SpPRvKGKjM5hvY6kaIYE3CxIWykCJ-O_SqVQPptMQtQHBQ5U07Q&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q8tMDegQIORAE",
+              "3": "https://www.google.com/search?q=Gumloop&sca_esv=8db88439da67627d&ei=MZlmaO-pL46XkPIP46Oq-Qw&start=20&sa=N&sstk=Ac65TH7LvvWopMqufmv_OHFh43gnmdhcW6UhebMLigXb3e2WhD5SpPRvKGKjM5hvY6kaIYE3CxIWykCJ-O_SqVQPptMQtQHBQ5U07Q&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q8tMDegQIORAG",
+              "4": "https://www.google.com/search?q=Gumloop&sca_esv=8db88439da67627d&ei=MZlmaO-pL46XkPIP46Oq-Qw&start=30&sa=N&sstk=Ac65TH7LvvWopMqufmv_OHFh43gnmdhcW6UhebMLigXb3e2WhD5SpPRvKGKjM5hvY6kaIYE3CxIWykCJ-O_SqVQPptMQtQHBQ5U07Q&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q8tMDegQIORAI",
+              "5": "https://www.google.com/search?q=Gumloop&sca_esv=8db88439da67627d&ei=MZlmaO-pL46XkPIP46Oq-Qw&start=40&sa=N&sstk=Ac65TH7LvvWopMqufmv_OHFh43gnmdhcW6UhebMLigXb3e2WhD5SpPRvKGKjM5hvY6kaIYE3CxIWykCJ-O_SqVQPptMQtQHBQ5U07Q&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q8tMDegQIORAK",
+              "6": "https://www.google.com/search?q=Gumloop&sca_esv=8db88439da67627d&ei=MZlmaO-pL46XkPIP46Oq-Qw&start=50&sa=N&sstk=Ac65TH7LvvWopMqufmv_OHFh43gnmdhcW6UhebMLigXb3e2WhD5SpPRvKGKjM5hvY6kaIYE3CxIWykCJ-O_SqVQPptMQtQHBQ5U07Q&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q8tMDegQIORAM",
+              "7": "https://www.google.com/search?q=Gumloop&sca_esv=8db88439da67627d&ei=MZlmaO-pL46XkPIP46Oq-Qw&start=60&sa=N&sstk=Ac65TH7LvvWopMqufmv_OHFh43gnmdhcW6UhebMLigXb3e2WhD5SpPRvKGKjM5hvY6kaIYE3CxIWykCJ-O_SqVQPptMQtQHBQ5U07Q&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q8tMDegQIORAO",
+              "8": "https://www.google.com/search?q=Gumloop&sca_esv=8db88439da67627d&ei=MZlmaO-pL46XkPIP46Oq-Qw&start=70&sa=N&sstk=Ac65TH7LvvWopMqufmv_OHFh43gnmdhcW6UhebMLigXb3e2WhD5SpPRvKGKjM5hvY6kaIYE3CxIWykCJ-O_SqVQPptMQtQHBQ5U07Q&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q8tMDegQIORAQ",
+              "9": "https://www.google.com/search?q=Gumloop&sca_esv=8db88439da67627d&ei=MZlmaO-pL46XkPIP46Oq-Qw&start=80&sa=N&sstk=Ac65TH7LvvWopMqufmv_OHFh43gnmdhcW6UhebMLigXb3e2WhD5SpPRvKGKjM5hvY6kaIYE3CxIWykCJ-O_SqVQPptMQtQHBQ5U07Q&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q8tMDegQIORAS",
+              "10": "https://www.google.com/search?q=Gumloop&sca_esv=8db88439da67627d&ei=MZlmaO-pL46XkPIP46Oq-Qw&start=90&sa=N&sstk=Ac65TH7LvvWopMqufmv_OHFh43gnmdhcW6UhebMLigXb3e2WhD5SpPRvKGKjM5hvY6kaIYE3CxIWykCJ-O_SqVQPptMQtQHBQ5U07Q&ved=2ahUKEwivhr-4-KCOAxWOC0QIHeORKs8Q8tMDegQIORAU"
+            }
+          },
+          "serpapi_pagination": {
+            "current": 1,
+            "next_link": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop&start=10",
+            "next": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop&start=10",
+            "other_pages": {
+              "2": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop&start=10",
+              "3": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop&start=20",
+              "4": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop&start=30",
+              "5": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop&start=40",
+              "6": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop&start=50",
+              "7": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop&start=60",
+              "8": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop&start=70",
+              "9": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop&start=80",
+              "10": "https://serpapi.com/search.json?device=desktop&engine=google&google_domain=google.com&q=Gumloop&start=90"
+            }
+          }
+        }
+      }
+    ],
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "query": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5bf100f4-b8f2-4388-9ab2-f99d00c96429",
+  "meta": {
+    "instanceId": "24cb73b55c22d9657b5fdc11799f6c92936b55c967240a9d40cd299a6a7a255a"
+  },
+  "id": "uz7rDZMnu56S7H3e",
+  "tags": []
+}
