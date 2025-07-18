@@ -1,5 +1,4 @@
 venv
 .env
-graphrag_mcp_server.py
 __pycache__/
 db/*

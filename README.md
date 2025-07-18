@@ -120,6 +120,9 @@ curl "http://localhost:8000/entities?text=ภาษีมูลค่าเพ�
 curl "http://localhost:8000/graph_search?entity=ราชอาณาจักร"
 ```
 
+#### NOTE: 
+The code for the MCP server is found in the graphrag_mcp_server.py and is independent of the code in the jupyter notebook.
+
 ---
 
 ### 5. Integration with n8n
@@ -171,6 +174,7 @@ All Neo4j and LLM configurations are loaded from your `.env` file:
 - `LLM_TYPE` - LLM provider (`ollama` or `google`)
 - `OLLAMA_MODEL` - Ollama model name
 - `GEMINI_API_KEY` - Google Gemini API key
+- `EMBEDDING_MODEL` - Ollama embedding model name
 
 ---
 
@@ -215,7 +219,7 @@ agentic-graphrag-langchain/
 ├── Dockerfile               # GraphRAG MCP Server container
 ├── requirements.txt         # Python dependencies
 ├── graphrag_mcp_server.py   # GraphRAG MCP Server (FastAPI + MCP)
-├── graphrag.ipynb          # Jupyter notebook for exploration
-├── n8n_configuration.md    # n8n integration guide
-└── README.md               # This file
+├── graphrag.ipynb           # Jupyter notebook for adding documents
+├── query.ipynb              # Jupyter notebook for exploration and querying
+└── README.md                # This file
 ```
